@@ -1,6 +1,7 @@
 const express=require("express");
 const app=express();
 const cors=require("cors")
+const {buildPrompt}=require("./prompt")
 
 const port=2000;
 app.use(cors())
@@ -11,30 +12,54 @@ app.get('/', (req, res) => {
 })
 
 
-app.get("/olama-test",async(req,res)=>{
+app.post("/analyze",async(req,res)=>{
 
     try{
 
-      const response=await fetch("http://localhost:11434/api/generate",{
+      const {transcript}=req.body;
+
+      if(!transcript){
+        return res.status(400).json({error: 'Transcript is required' })
+      }
+
+      const prompt=buildPrompt(transcript);
+
+      const ollamaResponse=await fetch("http://localhost:11434/api/generate",{
 
         method:"POST",
         headers:{'Content-Type':'application/json'},
         body:JSON.stringify({
           model:'llama3.2',
-          prompt:'Who is prime minister of India in 2003',
+          prompt:prompt,
           stream:false
         })
 
       })
 
-      const data=await response.json();
-      res.json({ollama_response: data.response})
+      const ollamaData =await ollamaResponse.json();
+      const responseText = ollamaData.response
+      
+      const jsonMatch=responseText.match(/\{[\s\S]*\}/);
+
+         if (!jsonMatch) {
+      return res.status(500).json({ 
+        error: 'AI response was not valid. Try again.' 
+      })
+    }
+
+
+    const analysis = JSON.parse(jsonMatch[0])
+    res.json(analysis)
 
     }
 
     catch(error){
 
-         res.json({ error: 'Ollama not working' })
+       console.error('Error:', error)
+
+       res.status(500).json({ 
+      error: 'Something went wrong. Try again.' 
+    })
 
     }
 
