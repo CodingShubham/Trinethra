@@ -1,5 +1,4 @@
 # Reference Material: Fellow Model, Rubric, KPIs, and Sample Data
-### DeepThought — Software Developer Internship
 
 This is the companion document to `assignment.md`. It contains the domain knowledge your tool needs to work correctly — the Fellow model, the rubric, the KPIs, and sample transcripts to test with.
 
