@@ -83,6 +83,9 @@ Now open your browser and go to http://localhost:5173
 
 ## Project Structure
 
+## Project Structure
+
+```
 trinethra/
 ├── backend/
 │   ├── app.js            → Express server, Ollama connection, error handling
@@ -98,6 +101,7 @@ trinethra/
 │   ├── rubric.json       → 1-10 scoring criteria
 │   └── sample-transcripts.json → 3 test transcripts
 └── README.md
+```
 
 ---
 
