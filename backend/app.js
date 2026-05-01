@@ -26,7 +26,7 @@ app.post("/analyze", async (req, res) => {
     const prompt = buildPrompt(transcript)
     console.log("Prompt built successfully")
 
-    const controller = new AbortController()
+    const controller = new AbortController();
     const timeoutId = setTimeout(() => {
       controller.abort()
       console.log("Request timed out after 10 minutes")
